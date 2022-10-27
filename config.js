@@ -6,7 +6,6 @@ const config = {
             PASSWORD: "zwS7D%qE!BQR9zg",
             DB: "freedb_technical_DB",
             dialect: "mysql",
-            dialect: "mysql",
             pool: {
                 max: 5,
                 min: 0,
