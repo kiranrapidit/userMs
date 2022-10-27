@@ -5,6 +5,8 @@ const app = express();
 const cors = require('cors');
 // set port, listen for requests
 const PORT = config.PORT || 3000;
+console.log("--------------------------",env)
+console.log("--------------------------",PORT)
 const actuator = require('express-actuator');
 // Sql Sequelize 
 const Sequelize = require("sequelize");
