@@ -1,10 +1,11 @@
 const config = {
     DEV: {
         SQl: {
-            HOST: "localhost",
-            USER: "root",
-            PASSWORD: "Root@123",
-            DB: "tc_db",
+            HOST: "sql.freedb.tech",
+            USER: "freedb_Technic",
+            PASSWORD: "zwS7D%qE!BQR9zg",
+            DB: "freedb_technical_DB",
+            dialect: "mysql",
             dialect: "mysql",
             pool: {
                 max: 5,
