@@ -48,7 +48,8 @@ const config = {
             level: "debug",
             path: "./logs/server.%Y%m%d.log",
             sizeOflog: "250m"
-        }
+        },
+        PORT: 3000,
 
     },
     PROD: {

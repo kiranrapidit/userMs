@@ -1,4 +1,5 @@
-const { Sequelize, Op, Model, DataTypes } = require("Sequelize");
+const { Sequelize, Op, Model, DataTypes } = require("sequelize");
+let env = process.env.NODE_ENV || 'DEV'
 const config = require("../config")[env]
 const log = require("../logger/logger")
 
