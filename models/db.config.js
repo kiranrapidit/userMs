@@ -1,4 +1,4 @@
-const { Sequelize, Op, Model, DataTypes } = require("Sequelize");
+const { Sequelize, Op, Model, DataTypes } = require("sequelize");
 const config = require("../config")[env]
 const log = require("../logger/logger")
 
