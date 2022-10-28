@@ -8,11 +8,12 @@ const controller = {
         if (req.file == undefined) {
             return res.status(400).send("Please upload an excel file!");
         }
+        let file = req.file
         let path =
-      __basedir + "/uploads/" + req.file.filename;
+      __basedir + "/uploads/" + file.filename;
 
-        log.info('uploadExcel controller parameters...', path);
-        let uploadExcelRes = await invokeBackend.uploadExcel(path);
+        log.info('uploadExcel controller parameters...', path,file);
+        let uploadExcelRes = await invokeBackend.uploadExcel(path,file);
         try {            
             console.log("...........", uploadExcelRes)
             if (uploadExcelRes) {

@@ -50,12 +50,13 @@ const exceldownload = async (req, res) => {
 };
 
 
-const uploadExcel = (path) => {
+const uploadExcel = async (path,file) => {
     return new Promise(async (resolve, reject) => {
         log.info('uploadExcel controller started...');
         let uploadExcleRes
+        console.log("--------path------",path)
         try {
-            readXlsxFile(path).then((rows) => {
+            await readXlsxFile(path).then( async (rows) => {
                 // skip header
                 rows.shift();
 
@@ -72,28 +73,32 @@ const uploadExcel = (path) => {
                     books.push(book);
                 });
 
-                Books.bulkCreate(books)
+                await Books.bulkCreate(books)
                     .then(() => {
-                        uploadExcleRes = {
-                            message: "Uploaded the file successfully: " + req.file.originalname,
-                        }
+                        uploadExcleRes = ({
+                            message: "Uploaded the file successfully: " + file.originalname,
+                        })
+                        console.log("------1--------",uploadExcleRes)
                     })
                     .catch((error) => {
-                        uploadExcleRes = {
+                        uploadExcleRes = ({
                             message: "Fail to import data into database!",
                             error: error.message,
-                        }
+                        })
+                        console.log("------2--------",uploadExcleRes)
+                        resolve(uploadExcleRes);
                     });
             });
-            resolve(uploadExcleRes)
+            console.log("------3--------",uploadExcleRes)
+           resolve(uploadExcleRes)
         } catch (error) {
             console.log(error);
             uploadExcleRes = {
-                message: "Could not upload the file: " + req.file.originalname,
+                message: "Could not upload the file: " + file.originalname,
             }
             resolve(uploadExcleRes)
         }
-
+        resolve(uploadExcleRes)
     })
 }
 

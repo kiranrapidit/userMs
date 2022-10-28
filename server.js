@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 const actuator = require('express-actuator');
 // Sql Sequelize 
 //const { Sequelize } = require("sequelize");
-global.__basedir = __dirname + "/";
+global.__basedir = __dirname;
 
 
 const log = require("./logger/logger")
