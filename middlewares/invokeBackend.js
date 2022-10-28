@@ -28,7 +28,7 @@ const createUser = async (userdetails) => {
                     email: userdetails.email
                 }
             })
-            console.log("-----", user)
+            //console.log("-----", user)
             if (user != null) {
                 createUserRes = ({
                     message: 'This email is taken',
@@ -37,7 +37,7 @@ const createUser = async (userdetails) => {
             } else {
 
                 let verifiedpass = await checkPasswordValidation(userdetails.password)
-                console.log("------verifiedpass-------", verifiedpass);
+                // console.log("------verifiedpass-------", verifiedpass);
                 if (verifiedpass != null) {
                     createUserRes = ({
                         message: verifiedpass,
@@ -47,6 +47,10 @@ const createUser = async (userdetails) => {
                     const newUser = new Users(userdetails);
                     // generate salt to hash password
                     const salt = (10);
+                    const userid = await Users.count();
+                    const genUserId = await padFix(userid)
+                    console.log(padFix(genUserId));
+                    newUser.user_id = genUserId
                     // now we set user password to hashed password
                     newUser.password = await bcrypt.hash(newUser.password, salt);
                     //console.log("--newUser.password--------------", newUser.password)
@@ -63,9 +67,9 @@ const createUser = async (userdetails) => {
                         resolve(createUserRes);
                         log.info('registration Failure details...', createUserRes);
                     });
-                }              
-                resolve(createUserRes);
+                }
             }
+            resolve(createUserRes);
         } catch (err) {
             log.info('registration Failure details...', err);
             reject(err)
@@ -73,6 +77,16 @@ const createUser = async (userdetails) => {
     })
 }
 
+
+/* unique userid genertion
+    * @params {string} : value : passwordValue
+    */
+
+async function padFix(n) {
+    var str = "RAPIDIT";
+    var num = ('0000000' + n).match(/\d{4}$/);
+    return str+=num[0]
+}
 
 /*
     * @params {string} : value : passwordValue
@@ -149,13 +163,17 @@ const loginUser = async (loginDetails) => {
     return new Promise(async (resolve, reject) => {
         let loginRes;
         try {
-            const user = await Users.findOne({ where: { [Op.or]: [
-                {
-                  user_id: loginDetails.loginId
-                }, {
-                  email: loginDetails.loginId
+            const user = await Users.findOne({
+                where: {
+                    [Op.or]: [
+                        {
+                            user_id: loginDetails.loginId
+                        }, {
+                            email: loginDetails.loginId
+                        }
+                    ]
                 }
-              ] } });
+            });
 
             log.info('existing user details...', user);
 
@@ -167,9 +185,10 @@ const loginUser = async (loginDetails) => {
                         expiresIn: config.jwtExpiration
                     });
                     loginRes = ({
-                        success: { code: "200", error: "User login successful" },
+                        success: { code: "200", message: "User login successful" },
                         id: user.id,
-                        username: user.first_name,
+                        userId : user.user_id,
+                        username: user.first_name + user.last_name,
                         email: user.email,
                         accessToken: token,
                     });

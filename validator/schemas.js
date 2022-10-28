@@ -1,24 +1,24 @@
 // schemas.js 
 const Joi = require('joi');
 const schemas = {
-    login: Joi.object().keys({        
+    login: Joi.object().keys({
         loginId: Joi.string().required(),
         password: Joi.string().min(8).trim(true).required(),
     }),
     register: Joi.object().keys({
-        first_name:Joi.string().min(4).required(),
-        last_name:Joi.string().min(4).required(),
-        user_id:Joi.string().alphanum().min(4).max(30).required(),
+        first_name: Joi.string().min(4).required(),
+        last_name: Joi.string().min(4).required(),
+        //user_id:Joi.string().alphanum().min(4).max(30).required(),
         email: Joi.string().email().trim(true).required(),
         password: Joi.string().min(8).trim(true).required(),
     }),
-    getUserProfile:Joi.object().keys({
-        id: Joi.string().required()
+    getUserProfile: Joi.object().keys({
+        id: Joi.number().integer().required()
     }),
-    updateUserProfile:Joi.object().keys({
-        first_name:Joi.string().min(4).required(),
-        last_name:Joi.string().min(4).required(),
-        user_id:Joi.string().alphanum().min(4).max(30).required(),
+    updateUserProfile: Joi.object().keys({
+        first_name: Joi.string().min(4).required(),
+        last_name: Joi.string().min(4).required(),
+        user_id: Joi.string().alphanum().min(4).max(30).required(),
         email: Joi.string().email().trim(true).required(),
         password: Joi.string().min(8).trim(true).required(),
     })
