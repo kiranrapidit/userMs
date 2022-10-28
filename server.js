@@ -7,7 +7,7 @@ const cors = require('cors');
 const PORT = config.PORT || 3000;
 const actuator = require('express-actuator');
 // Sql Sequelize 
-const Sequelize = require("sequelize");
+//const { Sequelize } = require("sequelize");
 global.__basedir = __dirname + "/";
 
 
