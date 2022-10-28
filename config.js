@@ -2,7 +2,7 @@ const config = {
     DEV: {
         SQl: {
             HOST: "sql.freedb.tech",
-            USER: "freedb_Technic",
+            USER: "freedb_Technical",
             PASSWORD: "zwS7D%qE!BQR9zg",
             DB: "freedb_technical_DB",
             dialect: "mysql",
