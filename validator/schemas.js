@@ -16,10 +16,9 @@ const schemas = {
         id: Joi.number().integer().required()
     }),
     updateUserProfile: Joi.object().keys({
+        id: Joi.number().integer().required(),
         first_name: Joi.string().min(4).required(),
-        last_name: Joi.string().min(4).required(),
-        user_id: Joi.string().alphanum().min(4).max(30).required(),
-        email: Joi.string().email().trim(true).required(),
+        last_name: Joi.string().min(4).required(),        
         password: Joi.string().min(8).trim(true).required(),
     })
 }

@@ -85,7 +85,7 @@ const createUser = async (userdetails) => {
 async function padFix(n) {
     var str = "RAPIDIT";
     var num = ('0000000' + n).match(/\d{4}$/);
-    return str+=num[0]
+    return str += num[0]
 }
 
 /*
@@ -121,37 +121,10 @@ async function checkPasswordValidation(value) {
     if (!isContainsSymbol.test(value)) {
         return "Password must contain at least one Special Symbol.";
     }
-
-
-    const isValidLength = /^.{10,16}$/;
-    if (!isValidLength.test(value)) {
-        return "Password must be 10-16 Characters Long.";
-    }
-
+    
     return null;
 }
 
-// async function createNewuser(userdetails) {
-//     let createUserRes;
-//     const newUser = new Users(userdetails);
-//     // generate salt to hash password
-//     const salt = await bcrypt.genSalt(10);
-//     // now we set user password to hashed password
-//     newUser.password = await bcrypt.hash(newUser.password, salt);
-//     console.log("------",)
-//     await newUser.save().then((user) => {
-//         console.log("------", user)
-//         createUserRes = user;        
-//         log.info('registration Successfull details...', createUserRes);
-//     }).catch((err) => {
-//         createUserRes = ({
-//             message: 'Error registering',
-//             err,
-//         });       
-//         log.info('registration Failure details...', createUserRes);
-//     });
-//     return createUserRes;
-// }
 
 /*
     * @params {object} : {
@@ -187,7 +160,7 @@ const loginUser = async (loginDetails) => {
                     loginRes = ({
                         success: { code: "200", message: "User login successful" },
                         id: user.id,
-                        userId : user.user_id,
+                        userId: user.user_id,
                         username: user.first_name + user.last_name,
                         email: user.email,
                         accessToken: token,
@@ -242,41 +215,51 @@ const updateUserProfile = async (userdetails) => {
         try {
             let user = await Users.findOne({
                 where: {
-                    email: userdetails.email
+                    id: userdetails.id
                 }
             })
-            console.log("-----", user)
+            // console.log("-----", user)
             if (user == null) {
                 updateUserProfileRes = ({
                     message: 'user not found',
                 });
                 log.info('user update Failure details...', updateUserProfileRes);
+            }
+
+            let verifiedpass = await checkPasswordValidation(userdetails.password)
+            // console.log("------verifiedpass-------", verifiedpass);
+            if (verifiedpass != null) {
+                updateUserProfileRes = ({
+                    message: verifiedpass,
+                });
+                log.info('update Failure details...', verifiedpass);
             } else {
 
-                const id = user.id;
-
-                console.log("--userdetails-------------------------", id)
-                const olduser = new Users(userdetails);
+                // console.log("--userdetails-------------------------", userdetails.id)
+                //const olduser = new Users(userdetails);
                 // generate salt to hash password
                 const salt = (10);
                 // now we set user password to hashed password
-                olduser.password = await bcrypt.hash(olduser.password, salt);
-                await olduser.update(olduser, {
-                    where: { id: id }
+                userdetails.password = await bcrypt.hash(userdetails.password, salt);
+                //console.log("--olduser-------------------------", userdetails)
+                await Users.update({ first_name: userdetails.first_name, last_name: userdetails.last_name, password: userdetails.password }, {
+                    where: { id: userdetails.id }
                 }).then((user) => {
-                    console.log("------", user)
-                    updateUserProfileRes = user;
+                    //console.log("----user--", user)
+                    updateUserProfileRes = ({
+                        message: "user  details Successfull updated...",
+                    });
                     log.info('user  details Successfull updated...', updateUserProfileRes);
                 }).catch((err) => {
                     updateUserProfileRes = ({
-                        message: 'Error registering',
+                        message: 'Error updating',
                         err,
                     });
                     resolve(updateUserProfileRes);
                     log.info('user  details update Failure...', updateUserProfileRes);
                 });
             }
-            console.log("--createUserRes----", updateUserProfileRes)
+            //console.log("--createUserRes----", updateUserProfileRes)
             resolve(updateUserProfileRes);
         } catch (err) {
             log.info('registration Failure details...', err);
